@@ -4,7 +4,7 @@ import 'package:math_expressions/math_expressions.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Calculator',
       home: Scaffold(
-        backgroundColor: const Color(0xFF283637),
+        backgroundColor: Color(0xff2e3440),
         // appBar: AppBar(
         //   title: const Text('EzMath'),
         // ),
@@ -37,6 +37,15 @@ class CalciAppState extends State<CalciApp> {
   String _history = '';
   String _expression = '';
 
+  RegExp operatorRegexp = RegExp(
+    r"[-+*\/%]",
+    caseSensitive: false,
+    multiLine: false,
+  );
+
+  // static const IconData backspace =
+  //     IconData(0xe0c5, fontFamily: 'MaterialIcons', matchTextDirection: true);
+
   void numClick(String text) {
     setState(() => _expression += text);
   }
@@ -48,10 +57,22 @@ class CalciAppState extends State<CalciApp> {
     });
   }
 
-  void clear(String text) {
+  void backspace(String text) {
     setState(() {
-      _expression = '';
+      if (_expression != "") {
+        _expression = _expression.substring(0, _expression.length - 1);
+      }
     });
+  }
+
+  void approx(String text) {
+    if (!operatorRegexp.hasMatch(_expression)) {
+      var num = double.parse(_expression);
+
+      setState(
+        () => _expression = (.5 * num).round().toString(),
+      );
+    }
   }
 
   void evaluate(String text) {
@@ -81,7 +102,7 @@ class CalciAppState extends State<CalciApp> {
                   style: GoogleFonts.rubik(
                     textStyle: const TextStyle(
                       fontSize: 24,
-                      color: Color(0xFF545F61),
+                      color: Colors.grey,
                     ),
                   ),
                 ),
@@ -94,7 +115,7 @@ class CalciAppState extends State<CalciApp> {
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Text(
-                  _expression,
+                  _expression != "" ? _expression : "0",
                   style: GoogleFonts.rubik(
                     textStyle: const TextStyle(
                       fontSize: 48,
@@ -114,22 +135,22 @@ class CalciAppState extends State<CalciApp> {
                 Expanded(
                   child: CalcButton(
                     text: 'AC',
-                    fillColor: 0xFF6C807F,
+                    fillColor: 0xFF3b4252,
                     textSize: 20,
                     callback: allClear,
                   ),
                 ),
                 Expanded(
                   child: CalcButton(
-                    text: 'C',
-                    fillColor: 0xFF6C807F,
-                    callback: clear,
+                    text: "⌫",
+                    fillColor: 0xFF3b4252,
+                    callback: backspace,
                   ),
                 ),
                 Expanded(
                   child: CalcButton(
                     text: '%',
-                    fillColor: 0xFFFFFFFF,
+                    fillColor: 0xFF434c5e,
                     textColor: 0xFF65BDAC,
                     callback: numClick,
                   ),
@@ -137,7 +158,7 @@ class CalciAppState extends State<CalciApp> {
                 Expanded(
                   child: CalcButton(
                     text: '/',
-                    fillColor: 0xFFFFFFFF,
+                    fillColor: 0xFF434c5e,
                     textColor: 0xFF65BDAC,
                     callback: numClick,
                   ),
@@ -170,7 +191,7 @@ class CalciAppState extends State<CalciApp> {
                 Expanded(
                   child: CalcButton(
                     text: '*',
-                    fillColor: 0xFFFFFFFF,
+                    fillColor: 0xFF434c5e,
                     textColor: 0xFF65BDAC,
                     textSize: 24,
                     callback: numClick,
@@ -204,7 +225,7 @@ class CalciAppState extends State<CalciApp> {
                 Expanded(
                   child: CalcButton(
                     text: '-',
-                    fillColor: 0xFFFFFFFF,
+                    fillColor: 0xFF434c5e,
                     textColor: 0xFF65BDAC,
                     textSize: 38,
                     callback: numClick,
@@ -238,7 +259,7 @@ class CalciAppState extends State<CalciApp> {
                 Expanded(
                   child: CalcButton(
                     text: '+',
-                    fillColor: 0xFFFFFFFF,
+                    fillColor: 0xFF434c5e,
                     textColor: 0xFF65BDAC,
                     textSize: 30,
                     callback: numClick,
@@ -265,15 +286,15 @@ class CalciAppState extends State<CalciApp> {
                 ),
                 Expanded(
                   child: CalcButton(
-                    text: '00',
-                    callback: numClick,
+                    text: '≈',
+                    callback: approx,
                     textSize: 26,
                   ),
                 ),
                 Expanded(
                   child: CalcButton(
                     text: '=',
-                    fillColor: 0xFFFFFFFF,
+                    fillColor: 0xFF434c5e,
                     textColor: 0xFF65BDAC,
                     callback: evaluate,
                   ),
