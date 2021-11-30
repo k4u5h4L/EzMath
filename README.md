@@ -43,3 +43,10 @@ flutter build apk
 ```
 
 You can then find the apk at `build/app/outputs/flutter-apk/app-release.apk`.
+
+## Screenshots
+
+<br>
+<p align="center">
+<img width="560px" src="screenshot.png" alt="ezmath"></img>
+</p>
