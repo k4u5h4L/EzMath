@@ -36,7 +36,7 @@ flutter pub get
 flutter run
 ```
 
-- To build a production release (mostly an APK, as ios is not properly configured), run:
+- To build a production release, run:
 
 ```
 flutter build apk
